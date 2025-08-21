@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      // Зменены шлях, каб ён паказваў на корань праекта
+      "@/*": [
+        "./*"
+      ],
+      "@/app/*": [
+        "./app/*"
+      ]
+    }
+  },
+  // Абнавілі, каб уключыць усе неабходныя папкі ў корані
+  "include": [
+    "next-env.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "lib1/**/*.ts",
+    "lib1/**/*.tsx",
+    "types/**/*.ts",
+    "types/**/*.tsx",
+    ".next/types/**/*.ts",
+    "lib/api.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

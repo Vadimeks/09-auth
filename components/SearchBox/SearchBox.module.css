@@ -1,0 +1,25 @@
+/* components/SearchBox/SearchBox.module.css */
+.input {
+    flex: 1;
+    max-width: 240px;
+    padding: 6px 12px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.searchButton {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-left: 4px;
+}
+
+.searchButton:hover {
+    background-color: #0b5ed7;
+}

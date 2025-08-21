@@ -1,0 +1,9 @@
+/* components/Loader/Loader.module.css */
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #333;
+}
