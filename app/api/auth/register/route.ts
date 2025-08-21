@@ -1,49 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { api } from "../../api";
+import { cookies } from "next/headers";
 import { parse } from "cookie";
 import { isAxiosError } from "axios";
 import { logErrorResponse } from "../../_utils/utils";
 
-export async function GET(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
+    const body = await req.json();
+
+    const apiRes = await api.post("auth/register", body);
+
     const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-    const next = request.nextUrl.searchParams.get("next") || "/";
+    const setCookie = apiRes.headers["set-cookie"];
 
-    if (refreshToken) {
-      const apiRes = await api.get("auth/session", {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      });
-      const setCookie = apiRes.headers["set-cookie"];
-      if (setCookie) {
-        const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
-        let accessToken = "";
-        let refreshToken = "";
+    if (setCookie) {
+      const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+      for (const cookieStr of cookieArray) {
+        const parsed = parse(cookieStr);
 
-        for (const cookieStr of cookieArray) {
-          const parsed = parse(cookieStr);
-          if (parsed.accessToken) accessToken = parsed.accessToken;
-          if (parsed.refreshToken) refreshToken = parsed.refreshToken;
-        }
-
-        if (accessToken) cookieStore.set("accessToken", accessToken);
-        if (refreshToken) cookieStore.set("refreshToken", refreshToken);
-
-        return NextResponse.redirect(new URL(next, request.url), {
-          headers: {
-            "set-cookie": cookieStore.toString(),
-          },
-        });
+        const options = {
+          expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
+          path: parsed.Path,
+          maxAge: Number(parsed["Max-Age"]),
+        };
+        if (parsed.accessToken)
+          cookieStore.set("accessToken", parsed.accessToken, options);
+        if (parsed.refreshToken)
+          cookieStore.set("refreshToken", parsed.refreshToken, options);
       }
+      return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
     }
     logErrorResponse({ message: (error as Error).message });
     return NextResponse.json(
