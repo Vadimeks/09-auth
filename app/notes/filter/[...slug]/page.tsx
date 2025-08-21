@@ -1,9 +1,8 @@
 /* app/notes/filter/[...slug]/page.tsx */
-import { fetchNotes } from "@/lib/api/api";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import NotesClient from "./Notes.client";
-import type { Tag } from "@/types/note";
+import type { Tag, FetchNotesResponse } from "@/types/note";
 
 interface NotesPageProps {
   searchParams: Promise<{ page?: string; search?: string }>;
@@ -83,9 +82,16 @@ export default async function NotesPage({
     ? (slugTag as Tag)
     : "All";
 
-  const tagForApi = tag === "All" ? undefined : tag;
+  const res = await fetch(
+    `http://localhost:3000/api/notes?page=${page}&perPage=12&search=${search}&tag=${
+      tag === "All" ? "" : tag
+    }`
+  );
+  if (!res.ok) {
+    throw new Error("Failed to fetch notes.");
+  }
 
-  const notesData = await fetchNotes(page, 12, search, tagForApi);
+  const notesData: FetchNotesResponse = await res.json();
 
   return (
     <>
