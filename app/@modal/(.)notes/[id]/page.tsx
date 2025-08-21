@@ -3,7 +3,7 @@ import { QueryClient, dehydrate } from "@tanstack/react-query";
 import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import ModalContainer from "./modal";
-import { fetchNoteById } from "@/lib/api";
+import { fetchNoteById } from "@/lib/api/api";
 
 export default async function InterceptedNoteDetailsPage({
   params,

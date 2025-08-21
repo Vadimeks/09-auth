@@ -44,7 +44,7 @@
     "types/**/*.ts",
     "types/**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/api.ts"
+    "lib/api/api.ts"
   ],
   "exclude": [
     "node_modules"
