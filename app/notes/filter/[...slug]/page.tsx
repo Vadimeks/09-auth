@@ -1,5 +1,5 @@
 /* app/notes/filter/[...slug]/page.tsx */
-import { fetchNotes } from "@/lib/api/clientApi";
+import { fetchNotes } from "@/lib/api/serverApi"; // Змяніць імпарт
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import NotesClient from "./Notes.client";
@@ -20,6 +20,11 @@ export async function generateMetadata({
     "Personal",
     "Meeting",
     "Shopping",
+    "Ideas",
+    "Travel",
+    "Finance",
+    "Health",
+    "Important",
     "All",
   ];
   const slugTag =
@@ -70,6 +75,11 @@ export default async function NotesPage({
     "Personal",
     "Meeting",
     "Shopping",
+    "Ideas",
+    "Travel",
+    "Finance",
+    "Health",
+    "Important",
     "All",
   ];
   const slugTag =
