@@ -1,4 +1,4 @@
-// app/notes/filter/[...slug]/Notes.client.tsx
+// notes/filter/[...slug]/Notes.client.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -9,13 +9,14 @@ import {
 } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { Toaster } from "react-hot-toast";
-import Link from "next/link"; // Import Link
+import Link from "next/link";
 
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList";
 import Loader from "@/components/Loader/Loader";
 
+import { fetchNotes } from "@/lib/api";
 import type { FetchNotesResponse, Tag } from "@/types/note";
 import css from "./page.module.css";
 
@@ -38,16 +39,8 @@ export default function NotesClient({ notesData, tag }: NotesClientProps) {
 
   const { data, isLoading, isFetching } = useQuery<FetchNotesResponse, Error>({
     queryKey: ["notes", debouncedQuery, page, tag],
-    queryFn: async () => {
-      // Замест імпарту fetchNotes, мы выклікаем наш Next.js API маршрут
-      const res = await fetch(
-        `/api/notes?page=${page}&perPage=12&search=${debouncedQuery}&tag=${tag}`
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch notes.");
-      }
-      return res.json();
-    },
+    queryFn: () =>
+      fetchNotes(page, 12, debouncedQuery, tag === "All" ? undefined : tag),
     enabled: true,
     placeholderData: keepPreviousData,
     retry: 1,

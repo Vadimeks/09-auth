@@ -1,7 +1,7 @@
 // components/NoteForm/NoteForm.tsx
 "use client";
 
-import { createNote } from "@/lib/api/api";
+import { createNote } from "@/lib/api";
 import type { Tag } from "@/types/note";
 import styles from "./NoteForm.module.css";
 import toast from "react-hot-toast";

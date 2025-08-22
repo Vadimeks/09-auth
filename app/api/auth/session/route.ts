@@ -1,3 +1,4 @@
+// app/api/auth/session/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { api } from "../../api";

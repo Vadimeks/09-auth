@@ -1,6 +1,8 @@
+/* components/NoteList/NoteList.tsx */
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteNote } from "@/lib/api";
 import type { Note } from "@/types/note";
 import styles from "@/components/NoteList/NoteList.module.css";
 import toast from "react-hot-toast";
@@ -14,17 +16,7 @@ export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (noteId: string) => {
-      // Замест імпарту deleteNote, мы выклікаем наш Next.js API маршрут.
-      const res = await fetch(`/api/notes/${noteId}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to delete note.");
-      }
-      return res.json();
-    },
+    mutationFn: deleteNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       toast.success("Note deleted successfully!");
@@ -54,7 +46,7 @@ export default function NoteList({ notes }: NoteListProps) {
               onClick={() => handleDelete(note.id)}
               disabled={mutation.isPending}
             >
-              {mutation.isPending ? "Deleting..." : "Delete"}
+              Delete
             </button>
           </div>
         </li>

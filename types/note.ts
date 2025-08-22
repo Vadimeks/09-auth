@@ -1,4 +1,5 @@
 // types/note.ts
+
 export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping" | "All";
 
 export interface Note {
@@ -13,4 +14,7 @@ export interface Note {
 export interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
+  total: number;
+  page: number;
+  perPage: number;
 }

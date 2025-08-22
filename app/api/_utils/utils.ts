@@ -1,3 +1,4 @@
+// app/api/_utils/utils.ts
 export function logErrorResponse(errorObj: unknown): void {
   const green = "\x1b[32m";
   const yellow = "\x1b[33m";
