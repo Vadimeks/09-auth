@@ -1,3 +1,4 @@
+// lib/api/clientApi.ts
 import { api } from "./api";
 import type { LoginRequest, RegisterRequest, User } from "@/types/user";
 import type { Note, FetchNotesResponse, Tag } from "@/types/note";
@@ -14,7 +15,12 @@ export const registerUser = async (data: RegisterRequest): Promise<User> => {
   return response.data;
 };
 
-// fetch notes (спіс нотатак)
+// logout
+export const logoutUser = async (): Promise<void> => {
+  await api.post("/auth/logout");
+};
+
+// fetch notes
 export const fetchNotes = async (
   page: number,
   perPage: number,
