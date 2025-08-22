@@ -1,6 +1,17 @@
 // types/note.ts
 
-export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping" | "All";
+export type Tag =
+  | "Todo"
+  | "Work"
+  | "Personal"
+  | "Meeting"
+  | "Shopping"
+  | "Ideas"
+  | "Travel"
+  | "Finance"
+  | "Health"
+  | "Important"
+  | "All";
 
 export interface Note {
   id: string;
@@ -9,6 +20,7 @@ export interface Note {
   tag: Tag;
   createdAt: string;
   updatedAt: string;
+  userId: string;
 }
 
 export interface FetchNotesResponse {
