@@ -1,5 +1,5 @@
 /* app/notes/filter/[...slug]/page.tsx */
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from "@/lib/api/api";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import NotesClient from "./Notes.client";
