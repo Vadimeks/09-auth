@@ -17,6 +17,7 @@ const mockFetchNotes = async (): Promise<Note[]> => {
       createdAt: "2025-08-08T10:00:00Z",
       updatedAt: "2025-08-08T10:00:00Z",
       tag: "Work",
+      userId: "user123",
     },
     {
       id: "2",
@@ -25,6 +26,7 @@ const mockFetchNotes = async (): Promise<Note[]> => {
       createdAt: "2025-08-07T15:30:00Z",
       updatedAt: "2025-08-07T15:30:00Z",
       tag: "Shopping",
+      userId: "user123",
     },
     {
       id: "3",
@@ -34,6 +36,7 @@ const mockFetchNotes = async (): Promise<Note[]> => {
       createdAt: "2025-08-06T08:00:00Z",
       updatedAt: "2025-08-06T08:00:00Z",
       tag: "Work",
+      userId: "user123",
     },
   ];
 };
