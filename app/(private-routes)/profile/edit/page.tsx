@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useAuthStore } from "@/lib/store/authStore";
 import { api } from "@/lib/api/api";
 import { User } from "@/types/user";
@@ -11,7 +12,7 @@ import css from "./EditProfilePage.module.css";
 export default function EditProfilePage() {
   const { user, isAuthenticated, setUser } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
-  const [formData, setFormData] = useState({ username: "", avatar: "" });
+  const [formData, setFormData] = useState({ username: "", email: "" });
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -26,10 +27,9 @@ export default function EditProfilePage() {
         setUser(response.data);
         setFormData({
           username: response.data.username || "",
-          avatar: response.data.avatar || "",
+          email: response.data.email || "",
         });
-      } catch (err: unknown) {
-        console.error("Session check error:", err);
+      } catch {
         router.push("/sign-in");
       } finally {
         setIsLoading(false);
@@ -37,22 +37,38 @@ export default function EditProfilePage() {
     };
 
     checkSession();
-  }, [isAuthenticated, user, setUser, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await api.patch<User>("/users", formData);
+      const payload: Partial<User> = {};
+      if (formData.username.trim() && formData.username !== user?.username) {
+        payload.username = formData.username.trim();
+      }
+      if (formData.email.trim() && formData.email !== user?.email) {
+        payload.email = formData.email.trim();
+      }
+      if (Object.keys(payload).length === 0) {
+        setError("No changes to save");
+        return;
+      }
+
+      const response = await api.patch<User>("/users/me", payload);
       setUser(response.data);
       router.push("/profile");
-    } catch (err: unknown) {
-      let message = "Failed to update profile";
-      if (typeof err === "object" && err !== null && "response" in err) {
-        message =
-          (err as { response?: { data?: { message?: string } } }).response?.data
-            ?.message || message;
-      }
+    } catch (err) {
+      const message =
+        typeof err === "object" &&
+        err !== null &&
+        "response" in err &&
+        (err as { response?: { data?: { message?: string } } }).response?.data
+          ?.message
+          ? (err as { response?: { data?: { message?: string } } }).response!
+              .data!.message!
+          : "Failed to update profile";
       setError(message);
     }
   };
@@ -74,8 +90,12 @@ export default function EditProfilePage() {
   }
 
   if (!isAuthenticated || !user) {
-    return null; // Перанакіраванне адбудзецца ў useEffect
+    return null;
   }
+
+  // Фікс для тыпу src (null/undefined)
+  const avatarSrc: string =
+    user.avatar ?? "https://ac.goit.global/fullstack/react/default-avatar.jpg";
 
   return (
     <main className={css.mainContent}>
@@ -95,12 +115,12 @@ export default function EditProfilePage() {
             />
           </div>
           <div className={css.usernameWrapper}>
-            <label htmlFor="avatar">Avatar URL</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="avatar"
-              name="avatar"
-              value={formData.avatar}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleInputChange}
               className={css.input}
             />
@@ -118,6 +138,16 @@ export default function EditProfilePage() {
             </button>
           </div>
         </form>
+        <div className={css.avatarBlock}>
+          <Image
+            src={avatarSrc}
+            alt="Avatar"
+            className={css.avatar}
+            width={64}
+            height={64}
+            priority
+          />
+        </div>
       </div>
     </main>
   );
