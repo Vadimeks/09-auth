@@ -1,5 +1,6 @@
 // app/(private-routes)/layout.tsx
 import type { Metadata } from "next";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
 export const metadata: Metadata = {
   title: "NoteHub | Private",
@@ -11,5 +12,5 @@ export default function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <AuthProvider>{children}</AuthProvider>;
 }
