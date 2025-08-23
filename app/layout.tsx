@@ -60,14 +60,14 @@ export default function RootLayout({
       <body className={`${roboto.variable} ${styles.body}`}>
         <AuthProvider>
           <TanStackProvider>
-            {/* Абгортвай NotesProvider толькі калі патрэбен для ўсіх */}
-            {/* <NotesProvider> */}
+            {}
+            {}
             <Header allTags={allTags} />
             <main className={homeStyles.main}>{children}</main>
             <div id="modal-root" />
             {modal}
             <Footer />
-            {/* </NotesProvider> */}
+            {}
           </TanStackProvider>
         </AuthProvider>
       </body>

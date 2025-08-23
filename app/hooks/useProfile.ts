@@ -1,6 +1,6 @@
 // app/hooks/useProfile.ts
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api/api"; // Правер, што api перадае cookies!
+import { api } from "@/lib/api/api";
 import { User } from "@/types/user";
 
 export function useProfile() {
@@ -8,7 +8,7 @@ export function useProfile() {
     queryKey: ["profile"],
     queryFn: async () => {
       const response = await api.get<User>("/auth/session", {
-        withCredentials: true, // <--- ВАЖНА!
+        withCredentials: true,
       });
       return response.data;
     },
