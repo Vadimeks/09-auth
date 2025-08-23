@@ -5,11 +5,16 @@ import type { Tag } from "@/types/note";
 import css from "./SidebarNotes.module.css";
 
 const allTags: Tag[] = [
-  "Todo",
   "Work",
   "Personal",
   "Meeting",
   "Shopping",
+  "Ideas",
+  "Travel",
+  "Finance",
+  "Health",
+  "Important",
+  "Todo",
   "All",
 ];
 

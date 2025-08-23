@@ -21,9 +21,9 @@ export default function SignUpPage() {
     setIsSubmitting(true);
     try {
       const user = await registerUser({ email, password });
-      setUser(user); // Дадаем карыстальніка ў стор
+      setUser(user);
       toast.success("Registration successful!");
-      router.push("/profile"); // Рэдірэкт на /profile паводле задання
+      router.push("/profile");
     } catch (error: unknown) {
       let message = "Registration failed";
       if (axios.isAxiosError(error) && error.response) {

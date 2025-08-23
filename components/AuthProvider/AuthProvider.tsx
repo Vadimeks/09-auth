@@ -19,7 +19,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [isAuthenticated, router]);
 
-  // Можна паказваць loader, пакуль не вызначаны стэйт (дадай па жаданні).
   if (!isAuthenticated) {
     return null;
   }

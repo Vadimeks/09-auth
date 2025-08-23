@@ -93,7 +93,6 @@ export default function EditProfilePage() {
     return null;
   }
 
-  // Фікс для тыпу src (null/undefined)
   const avatarSrc: string =
     user.avatar ?? "https://ac.goit.global/fullstack/react/default-avatar.jpg";
 

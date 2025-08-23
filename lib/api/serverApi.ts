@@ -36,12 +36,9 @@ export const fetchNotes = async (
     });
     return response.data;
   } catch (error) {
-    // Не выводзім у кансолі памылку, калі гэта 401 (неаўтэнтыфікаваны юзер)
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      // Можна вяртаць null або пусты вынік
       return null;
     }
-    // Выводзім у кансолі толькі сапраўдныя памылкі
     if (process.env.NODE_ENV === "development") {
       console.error("Server Error fetching notes:", error);
     }

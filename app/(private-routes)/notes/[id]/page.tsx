@@ -1,7 +1,7 @@
 // app/notes/[id]/page.tsx
 import { QueryClient, dehydrate } from "@tanstack/react-query";
-import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
-import { fetchNoteById } from "@/lib/api";
+import NoteDetailsClient from "@/app/(private-routes)/notes/[id]/NoteDetails.client";
+import { fetchNoteById } from "@/lib/api/clientApi";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import { type Metadata } from "next";
 

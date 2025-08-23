@@ -45,7 +45,7 @@ export default function ProfilePage() {
   }
 
   if (!isAuthenticated || !user) {
-    return null; // Перанакіраванне адбудзецца ў useEffect
+    return null;
   }
 
   return (

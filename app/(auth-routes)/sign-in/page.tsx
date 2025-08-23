@@ -23,7 +23,7 @@ export default function SignInPage() {
       const user = await loginUser({ email, password });
       setUser(user);
       toast.success("Login successful!");
-      router.push("/profile"); // Рэдірэкт на /profile паводле задання
+      router.push("/profile");
     } catch (error: unknown) {
       let message = "Login failed";
       if (axios.isAxiosError(error) && error.response) {

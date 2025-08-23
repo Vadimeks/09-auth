@@ -9,8 +9,20 @@ import { useRouter } from "next/navigation";
 import { useNoteStore } from "@/lib/store/noteStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+const allTags: Tag[] = [
+  "Work",
+  "Personal",
+  "Meeting",
+  "Shopping",
+  "Ideas",
+  "Travel",
+  "Finance",
+  "Health",
+  "Important",
+  "Todo",
+];
+
 export default function NoteForm() {
-  const allTags: Tag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
   const router = useRouter();
 
   const { draft, setDraft, clearDraft } = useNoteStore();

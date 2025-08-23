@@ -36,6 +36,19 @@ export const metadata: Metadata = {
   },
 };
 
+const allTags: Tag[] = [
+  "Work",
+  "Personal",
+  "Meeting",
+  "Shopping",
+  "Ideas",
+  "Travel",
+  "Finance",
+  "Health",
+  "Important",
+  "Todo",
+];
+
 export default function RootLayout({
   children,
   modal,
@@ -43,8 +56,6 @@ export default function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
-  const allTags: Tag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
-
   return (
     <ClerkProvider afterSignOutUrl="/">
       <NotesProvider>

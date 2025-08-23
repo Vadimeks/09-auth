@@ -1,5 +1,5 @@
 /* app/notes/filter/[...slug]/page.tsx */
-import { fetchNotes } from "@/lib/api/serverApi"; // Змяніць імпарт
+import { fetchNotes } from "@/lib/api/serverApi";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import NotesClient from "./Notes.client";
@@ -96,10 +96,16 @@ export default async function NotesPage({
   const tagForApi = tag === "All" ? undefined : tag;
 
   const notesData = await fetchNotes(page, 12, search, tagForApi);
-
+  const safeNotesData = notesData ?? {
+    notes: [],
+    totalPages: 1,
+    total: 0,
+    page,
+    perPage: 12,
+  };
   return (
     <>
-      <NotesClient notesData={notesData} tag={tag} />
+      <NotesClient notesData={safeNotesData} tag={tag} />
       <Toaster />
     </>
   );

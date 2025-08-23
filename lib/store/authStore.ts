@@ -6,7 +6,7 @@ type AuthStore = {
   isAuthenticated: boolean;
   user: User | null;
   setUser: (user: User) => void;
-  clearUser: () => void; // Перайменавалі
+  clearUser: () => void;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
