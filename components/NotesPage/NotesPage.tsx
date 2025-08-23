@@ -3,7 +3,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import NoteList from "@/components/NoteList/NoteList";
-// import type { Note } from "@/types/note";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { fetchNotes } from "@/lib/api/clientApi";

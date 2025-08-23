@@ -4,7 +4,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api/clientApi";
-import css from "@/app/(private-routes)/notes/[id]/NoteDetails.module.css";
+import css from "@/app/(private routes)/notes/[id]/NoteDetails.module.css";
 import type { Note } from "@/types/note";
 import { useEffect } from "react";
 

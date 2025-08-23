@@ -32,7 +32,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     checkSession();
   }, [setUser, clearUser]);
 
-  // Loader падчас праверкі
   if (loading) {
     return <div>Loading...</div>;
   }
