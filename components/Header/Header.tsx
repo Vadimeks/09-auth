@@ -18,13 +18,17 @@ const Header = ({ allTags }: HeaderProps) => {
         <Link href="/" className={css.headerLink} aria-label="Home">
           NoteHub
         </Link>
-        <div className={css.navigation}>
-          <TagsMenu allTags={allTags} />
-          <Link href="/about" className={css.navigationLink}>
-            About
-          </Link>
+        <ul className={css.navigation}>
+          <li className={css.navigationItem}>
+            <TagsMenu allTags={allTags} />
+          </li>
+          <li className={css.navigationItem}>
+            <Link href="/about" className={css.navigationLink}>
+              About
+            </Link>
+          </li>
           <AuthNavigation />
-        </div>
+        </ul>
       </nav>
     </header>
   );

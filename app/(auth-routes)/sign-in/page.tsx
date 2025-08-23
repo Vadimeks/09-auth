@@ -1,4 +1,4 @@
-// app/sign-in/page.tsx
+// app/(auth-routes)/sign-in/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -7,6 +7,7 @@ import { loginUser } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import toast from "react-hot-toast";
 import axios from "axios";
+import css from "./SignInPage.module.css";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ export default function SignInPage() {
       const user = await loginUser({ email, password });
       setUser(user);
       toast.success("Login successful!");
-      router.push("/notes/filter/all");
+      router.push("/profile"); // Рэдірэкт на /profile паводле задання
     } catch (error: unknown) {
       let message = "Login failed";
       if (axios.isAxiosError(error) && error.response) {
@@ -41,33 +42,46 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="auth-page">
-      <h2>Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
+    <main className={css.mainContent}>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <h1 className={css.formTitle}>Sign in</h1>
+        <div className={css.formGroup}>
+          <label htmlFor="email">Email</label>
           <input
+            id="email"
             type="email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className={css.input}
             required
             autoComplete="username"
           />
-        </label>
-        <label>
-          Password:
+        </div>
+        <div className={css.formGroup}>
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className={css.input}
             required
             autoComplete="current-password"
           />
-        </label>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Signing in..." : "Sign In"}
-        </button>
+        </div>
+        <div className={css.actions}>
+          <button
+            type="submit"
+            className={css.submitButton}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Signing in..." : "Log in"}
+          </button>
+        </div>
+        <p className={css.error}>{isSubmitting ? "" : " "}</p>
       </form>
-    </div>
+    </main>
   );
 }
