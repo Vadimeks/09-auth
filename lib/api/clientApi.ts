@@ -1,3 +1,4 @@
+// lib/api/clientApi.ts
 import { api } from "./api";
 import type { LoginRequest, RegisterRequest, User } from "@/types/user";
 import type { Note, FetchNotesResponse, Tag } from "@/types/note";
@@ -6,7 +7,9 @@ import axios from "axios";
 // login
 export const loginUser = async (data: LoginRequest): Promise<User> => {
   try {
-    const response = await api.post<User>("/auth/login", data);
+    const response = await api.post<User>("/auth/login", data, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -19,7 +22,9 @@ export const loginUser = async (data: LoginRequest): Promise<User> => {
 // register
 export const registerUser = async (data: RegisterRequest): Promise<User> => {
   try {
-    const response = await api.post<User>("/auth/register", data);
+    const response = await api.post<User>("/auth/register", data, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -32,7 +37,7 @@ export const registerUser = async (data: RegisterRequest): Promise<User> => {
 // logout
 export const logoutUser = async (): Promise<void> => {
   try {
-    await api.post("/auth/logout");
+    await api.post("/auth/logout", {}, { withCredentials: true });
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message || "Logout failed");
@@ -66,7 +71,10 @@ export const fetchNotes = async (
   }
 
   try {
-    const response = await api.get<FetchNotesResponse>("/notes", { params });
+    const response = await api.get<FetchNotesResponse>("/notes", {
+      params,
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -79,7 +87,9 @@ export const fetchNotes = async (
 // fetch note by id
 export const fetchNoteById = async (id: string): Promise<Note> => {
   try {
-    const response = await api.get<Note>(`/notes/${id}`);
+    const response = await api.get<Note>(`/notes/${id}`, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -94,7 +104,9 @@ export const createNote = async (
   note: Omit<Note, "id" | "createdAt" | "updatedAt" | "userId">
 ): Promise<Note> => {
   try {
-    const response = await api.post<Note>("/notes", note);
+    const response = await api.post<Note>("/notes", note, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -107,7 +119,9 @@ export const createNote = async (
 // delete note
 export const deleteNote = async (id: string): Promise<Note> => {
   try {
-    const response = await api.delete<Note>(`/notes/${id}`);
+    const response = await api.delete<Note>(`/notes/${id}`, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -124,7 +138,9 @@ export const updateUserProfile = async (data: {
   email?: string;
 }): Promise<User> => {
   try {
-    const response = await api.patch<User>("/users/profile", data);
+    const response = await api.patch<User>("/users/profile", data, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

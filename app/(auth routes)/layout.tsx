@@ -1,12 +1,12 @@
-// app/(private-routes)/layout.tsx
+// app/(auth routes)/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "NoteHub | Auth",
-  description: "Auth routes for NoteHub users",
+  description: "Authentication routes for NoteHub users",
 };
 
-export default function AuthLayout({
+export default function AuthRoutesLayout({
   children,
 }: {
   children: React.ReactNode;

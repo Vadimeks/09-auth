@@ -1,4 +1,3 @@
-// app/api/notes/[id]/route.ts
 import { NextResponse } from "next/server";
 import { api } from "../../api";
 import { cookies } from "next/headers";

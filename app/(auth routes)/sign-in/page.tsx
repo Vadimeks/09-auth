@@ -1,4 +1,4 @@
-// app/(auth-routes)/sign-in/page.tsx
+// app/(auth routes)/sign-in/page.tsx
 "use client";
 
 import { useState } from "react";
