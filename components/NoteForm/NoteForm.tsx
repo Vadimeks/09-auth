@@ -35,7 +35,7 @@ export default function NoteForm() {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       clearDraft();
       toast.success("Note created successfully!");
-      router.push("/");
+      router.push(`/notes/filter/${encodeURIComponent(draft.tag)}`);
     },
     onError: (error: Error) => {
       toast.error(`Error creating note: ${error.message}`);

@@ -136,3 +136,11 @@ export const updateUserProfile = async (data: {
     throw new Error("Unexpected update profile error");
   }
 };
+export const fetchSession = async (): Promise<User | null> => {
+  try {
+    const response = await api.get<User>("/auth/session");
+    return response.data;
+  } catch {
+    return null;
+  }
+};

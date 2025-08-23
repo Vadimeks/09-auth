@@ -1,50 +1,34 @@
 // notes/filter/[...slug]/Notes.client.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  useQuery,
-  useQueryClient,
-  keepPreviousData,
-} from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
-import { Toaster } from "react-hot-toast";
-import Link from "next/link";
-
+import NoteList from "@/components/NoteList/NoteList";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
-import NoteList from "@/components/NoteList/NoteList";
 import Loader from "@/components/Loader/Loader";
-
+import Link from "next/link";
+import { Toaster } from "react-hot-toast";
 import { fetchNotes } from "@/lib/api/clientApi";
-import type { FetchNotesResponse, Tag } from "@/types/note";
+import type { Tag } from "@/types/note";
 import css from "./page.module.css";
 
 interface NotesClientProps {
-  notesData: FetchNotesResponse;
   tag: Tag;
 }
 
-export default function NotesClient({ notesData, tag }: NotesClientProps) {
-  const queryClient = useQueryClient();
+export default function NotesClient({ tag }: NotesClientProps) {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [debouncedQuery] = useDebounce(query, 500);
 
-  useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: ["notes", debouncedQuery, page, tag],
-    });
-  }, [tag, debouncedQuery, page, queryClient]);
-
-  const { data, isLoading, isFetching } = useQuery<FetchNotesResponse, Error>({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ["notes", debouncedQuery, page, tag],
     queryFn: () =>
       fetchNotes(page, 12, debouncedQuery, tag === "All" ? undefined : tag),
-    enabled: true,
     placeholderData: keepPreviousData,
     retry: 1,
-    initialData: notesData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
@@ -71,7 +55,6 @@ export default function NotesClient({ notesData, tag }: NotesClientProps) {
             Create note +
           </Link>
         </div>
-
         {data && data.totalPages > 1 && (
           <Pagination
             pageCount={data.totalPages}

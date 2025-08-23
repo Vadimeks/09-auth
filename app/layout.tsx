@@ -2,14 +2,13 @@
 import styles from "./page.module.css";
 import "./globals.css";
 import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { NotesProvider } from "@/app/context/notesContext";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import { Roboto } from "next/font/google";
-import { Tag } from "@/types/note";
 import homeStyles from "./Home.module.css";
+import { Tag } from "@/types/note";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -57,20 +56,18 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider afterSignOutUrl="/">
-      <NotesProvider>
-        <TanStackProvider>
-          <html lang="en">
-            <body className={`${roboto.variable} ${styles.body}`}>
-              <Header allTags={allTags} />
-              <main className={homeStyles.main}>{children}</main>
-              <div id="modal-root" />
-              {modal}
-              <Footer />
-            </body>
-          </html>
-        </TanStackProvider>
-      </NotesProvider>
-    </ClerkProvider>
+    <NotesProvider>
+      <TanStackProvider>
+        <html lang="en">
+          <body className={`${roboto.variable} ${styles.body}`}>
+            <Header allTags={allTags} />
+            <main className={homeStyles.main}>{children}</main>
+            <div id="modal-root" />
+            {modal}
+            <Footer />
+          </body>
+        </html>
+      </TanStackProvider>
+    </NotesProvider>
   );
 }
