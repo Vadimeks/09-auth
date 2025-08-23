@@ -1,5 +1,6 @@
 /* app/notes/filter/[...slug]/page.tsx */
 import NotesClient from "./Notes.client";
+import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import type { Tag } from "@/types/note";
 import { type Metadata } from "next";
 
@@ -53,5 +54,10 @@ export default async function NotesPage({
   const tag: Tag = validTags.includes(slugTag as Tag)
     ? (slugTag as Tag)
     : "All";
-  return <NotesClient tag={tag} />;
+  // Абгортвай у ProtectedRoute
+  return (
+    <ProtectedRoute>
+      <NotesClient tag={tag} />
+    </ProtectedRoute>
+  );
 }

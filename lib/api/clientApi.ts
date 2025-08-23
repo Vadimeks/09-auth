@@ -1,4 +1,3 @@
-// lib/api/clientApi.ts
 import { api } from "./api";
 import type { LoginRequest, RegisterRequest, User } from "@/types/user";
 import type { Note, FetchNotesResponse, Tag } from "@/types/note";
@@ -136,13 +135,17 @@ export const updateUserProfile = async (data: {
     throw new Error("Unexpected update profile error");
   }
 };
+
+// fetch session (safe, no console errors, ESLint ok)
 export const fetchSession = async (): Promise<User | null> => {
   try {
     const response = await api.get<User>("/auth/session", {
       withCredentials: true,
     });
-
-    return response.data;
+    if (response.data && response.data.email) {
+      return response.data;
+    }
+    return null;
   } catch {
     return null;
   }
