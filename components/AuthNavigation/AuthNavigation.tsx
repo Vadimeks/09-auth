@@ -18,7 +18,7 @@ const AuthNavigation = () => {
     setIsLoggingOut(true);
     try {
       await logoutUser();
-      clearUser(); // Ачышчаем стан
+      clearUser();
       toast.success("Logged out!");
       router.push("/sign-in");
     } catch (error: unknown) {
@@ -32,6 +32,23 @@ const AuthNavigation = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <>
+        <li className={css.navigationItem}>
+          <Link href="/sign-in" prefetch={false} className={css.navigationLink}>
+            Login
+          </Link>
+        </li>
+        <li className={css.navigationItem}>
+          <Link href="/sign-up" prefetch={false} className={css.navigationLink}>
+            Sign up
+          </Link>
+        </li>
+      </>
+    );
+  }
+
   return (
     <>
       <li className={css.navigationItem}>
@@ -39,42 +56,16 @@ const AuthNavigation = () => {
           Profile
         </Link>
       </li>
-
-      {isAuthenticated && user && (
-        <li className={css.navigationItem}>
-          <p className={css.userEmail}>{user.email}</p>
-          <button
-            className={css.logoutButton}
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-          >
-            {isLoggingOut ? "Logging out..." : "Logout"}
-          </button>
-        </li>
-      )}
-
-      {!isAuthenticated && (
-        <>
-          <li className={css.navigationItem}>
-            <Link
-              href="/sign-in"
-              prefetch={false}
-              className={css.navigationLink}
-            >
-              Login
-            </Link>
-          </li>
-          <li className={css.navigationItem}>
-            <Link
-              href="/sign-up"
-              prefetch={false}
-              className={css.navigationLink}
-            >
-              Sign up
-            </Link>
-          </li>
-        </>
-      )}
+      <li className={css.navigationItem}>
+        <p className={css.userEmail}>{user?.email}</p>
+        <button
+          className={css.logoutButton}
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+        >
+          {isLoggingOut ? "Logging out..." : "Logout"}
+        </button>
+      </li>
     </>
   );
 };

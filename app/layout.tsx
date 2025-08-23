@@ -4,8 +4,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
-import { NotesProvider } from "@/app/context/notesContext";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 import { Roboto } from "next/font/google";
 import homeStyles from "./Home.module.css";
 import { Tag } from "@/types/note";
@@ -56,18 +56,21 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <NotesProvider>
-      <TanStackProvider>
-        <html lang="en">
-          <body className={`${roboto.variable} ${styles.body}`}>
+    <html lang="en">
+      <body className={`${roboto.variable} ${styles.body}`}>
+        <AuthProvider>
+          <TanStackProvider>
+            {/* Абгортвай NotesProvider толькі калі патрэбен для ўсіх */}
+            {/* <NotesProvider> */}
             <Header allTags={allTags} />
             <main className={homeStyles.main}>{children}</main>
             <div id="modal-root" />
             {modal}
             <Footer />
-          </body>
-        </html>
-      </TanStackProvider>
-    </NotesProvider>
+            {/* </NotesProvider> */}
+          </TanStackProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

@@ -138,7 +138,10 @@ export const updateUserProfile = async (data: {
 };
 export const fetchSession = async (): Promise<User | null> => {
   try {
-    const response = await api.get<User>("/auth/session");
+    const response = await api.get<User>("/auth/session", {
+      withCredentials: true,
+    });
+
     return response.data;
   } catch {
     return null;
