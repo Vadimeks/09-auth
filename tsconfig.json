@@ -42,7 +42,8 @@
     "types/**/*.ts",
     "types/**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/api/api.ts"
+    "lib/api/api.ts",
+    "middleware.ts"
   ],
   "exclude": [
     "node_modules"
