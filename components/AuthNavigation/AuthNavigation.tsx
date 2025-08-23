@@ -2,25 +2,23 @@
 "use client";
 
 import Link from "next/link";
-import css from "./AuthNavigation.module.css";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useAuthStore } from "@/lib/store/authStore";
 import { logoutUser } from "@/lib/api/clientApi";
 import toast from "react-hot-toast";
-import { useState } from "react";
-
-// Можна захоўваць email праз props або context (пакуль што для прыкладу тут захардкодзім)
-const userEmail =
-  typeof window !== "undefined" ? localStorage.getItem("userEmail") : null;
+import css from "./AuthNavigation.module.css";
 
 const AuthNavigation = () => {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { user, isAuthenticated, clearUser } = useAuthStore();
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
       await logoutUser();
-      localStorage.removeItem("userEmail");
+      clearUser(); // Ачышчаем стан
       toast.success("Logged out!");
       router.push("/sign-in");
     } catch (error: unknown) {
@@ -42,20 +40,20 @@ const AuthNavigation = () => {
         </Link>
       </li>
 
-      {userEmail && (
+      {isAuthenticated && user && (
         <li className={css.navigationItem}>
-          <p className={css.userEmail}>{userEmail}</p>
+          <p className={css.userEmail}>{user.email}</p>
           <button
             className={css.logoutButton}
             onClick={handleLogout}
             disabled={isLoggingOut}
           >
-            Logout
+            {isLoggingOut ? "Logging out..." : "Logout"}
           </button>
         </li>
       )}
 
-      {!userEmail && (
+      {!isAuthenticated && (
         <>
           <li className={css.navigationItem}>
             <Link

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerUser } from "@/lib/api/clientApi";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -16,13 +17,19 @@ export default function SignUpPage() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await registerUser({ email, password });
+      await registerUser({ email, password }); // Выдалены username
       toast.success("Registration successful! Please sign in.");
       router.push("/sign-in");
     } catch (error: unknown) {
       let message = "Registration failed";
-      if (typeof error === "object" && error !== null && "message" in error) {
-        message = String((error as { message?: string }).message);
+      if (axios.isAxiosError(error) && error.response) {
+        console.error(
+          "Register error:",
+          JSON.stringify(error.response.data, null, 2)
+        );
+        message = error.response.data.message || "Unknown registration error";
+      } else if (error instanceof Error) {
+        message = error.message;
       }
       toast.error(message);
     } finally {

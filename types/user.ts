@@ -2,7 +2,7 @@
 export type User = {
   id: string;
   email: string;
-  username: string;
+  username?: string; // Зробім username апцыянальным, бо бэкенд можа яго не вяртаць
 };
 
 export type LoginRequest = {
@@ -13,5 +13,4 @@ export type LoginRequest = {
 export type RegisterRequest = {
   email: string;
   password: string;
-  username?: string;
 };

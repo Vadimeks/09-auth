@@ -2,8 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import TagsMenu from "../TagsMenu/TagsMenu";
+import AuthNavigation from "../AuthNavigation/AuthNavigation";
 import type { Tag } from "@/types/note";
 import css from "./Header.module.css";
 
@@ -23,16 +23,7 @@ const Header = ({ allTags }: HeaderProps) => {
           <Link href="/about" className={css.navigationLink}>
             About
           </Link>
-          <SignedIn>
-            <div className={css.navigationItem}>
-              <UserButton />
-            </div>
-          </SignedIn>
-          <SignedOut>
-            <Link href="/sign-in" className={css.navigationLink}>
-              Sign In
-            </Link>
-          </SignedOut>
+          <AuthNavigation />
         </div>
       </nav>
     </header>
