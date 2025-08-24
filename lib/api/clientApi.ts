@@ -1,11 +1,15 @@
 // lib/api/clientApi.ts
 import { api } from './api';
-import type { LoginRequest, RegisterRequest, User } from '@/types/user';
+import type {
+  UserLoginFormValues,
+  UserRegisterFormValues,
+  User,
+} from '@/types/user';
 import type { Note, FetchNotesResponse, Tag } from '@/types/note';
 import axios from 'axios';
 
 // login
-export const loginUser = async (data: LoginRequest): Promise<User> => {
+export const loginUser = async (data: UserLoginFormValues): Promise<User> => {
   try {
     const response = await api.post<User>('/auth/login', data);
     return response.data;
@@ -18,7 +22,9 @@ export const loginUser = async (data: LoginRequest): Promise<User> => {
 };
 
 // register
-export const registerUser = async (data: RegisterRequest): Promise<User> => {
+export const registerUser = async (
+  data: UserRegisterFormValues
+): Promise<User> => {
   try {
     const response = await api.post<User>('/auth/register', data);
     return response.data;
