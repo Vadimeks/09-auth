@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
   const refreshToken = cookieStore.get('refreshToken')?.value;
-
+  console.log('MIDDLEWARE COOKIES:', accessToken, refreshToken);
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route)
   );
