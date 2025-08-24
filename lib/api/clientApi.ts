@@ -146,7 +146,7 @@ export const updateUserProfile = async (data: {
 // fetch session
 export const fetchSession = async (): Promise<User | null> => {
   try {
-    const response = await api.get('/auth/session');
+    const response = await api.get('/users/me');
     if (response.data && response.data.email) {
       return response.data as User;
     }
