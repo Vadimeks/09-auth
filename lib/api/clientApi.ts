@@ -127,7 +127,7 @@ export const deleteNote = async (id: string): Promise<Note> => {
 // update user profile
 export const updateUserProfile = async (data: {
   username?: string;
-  avatarUrl?: string;
+  avatar?: string;
   email?: string;
 }): Promise<User> => {
   try {
@@ -146,7 +146,7 @@ export const updateUserProfile = async (data: {
 // fetch session
 export const fetchSession = async (): Promise<User | null> => {
   try {
-    const response = await api.get('/users/me');
+    const response = await api.get('/auth/session');
     if (response.data && response.data.email) {
       return response.data as User;
     }
