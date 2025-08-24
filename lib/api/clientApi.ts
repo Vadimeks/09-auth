@@ -39,12 +39,25 @@ export const registerUser = async (
 // logout
 export const logoutUser = async (): Promise<void> => {
   try {
-    await api.post('/auth/logout', {});
+    await api.post('/auth/logout');
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message || 'Logout failed');
     }
     throw new Error('Unexpected logout error');
+  }
+};
+
+// fetch session (GET)
+export const fetchSession = async (): Promise<User | null> => {
+  try {
+    const response = await api.get<User>('/auth/session');
+    if (response.data && response.data.email) {
+      return response.data as User;
+    }
+    return null;
+  } catch {
+    return null;
   }
 };
 
@@ -140,18 +153,5 @@ export const updateUserProfile = async (data: {
       );
     }
     throw new Error('Unexpected update profile error');
-  }
-};
-
-// fetch session
-export const fetchSession = async (): Promise<User | null> => {
-  try {
-    const response = await api.get('/auth/session');
-    if (response.data && response.data.email) {
-      return response.data as User;
-    }
-    return null;
-  } catch {
-    return null;
   }
 };
