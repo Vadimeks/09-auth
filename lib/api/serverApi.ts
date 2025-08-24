@@ -1,17 +1,25 @@
 // lib/api/serverApi.ts
-import { api } from "./api";
-import { headers } from "next/headers";
-import type { FetchNotesResponse, Note, Tag } from "@/types/note";
-import axios from "axios";
+import { api } from './api';
+import { cookies } from 'next/headers';
+import type { FetchNotesResponse, Note, Tag } from '@/types/note';
+import type { User } from '@/types/user';
+import axios from 'axios';
 
+const getCookieString = async () => {
+  const cookieStore = await cookies();
+  return Array.from(cookieStore.getAll())
+    .map(({ name, value }) => `${name}=${value}`)
+    .join('; ');
+};
+
+// NOTES API
 export const fetchNotes = async (
   page: number,
   perPage: number,
-  search: string = "",
+  search: string = '',
   tag?: Tag
 ): Promise<FetchNotesResponse | null> => {
-  const headersInstance = await headers();
-  const cookie = headersInstance.get("cookie") || "";
+  const cookie = await getCookieString();
   try {
     const params: {
       page: number;
@@ -26,11 +34,11 @@ export const fetchNotes = async (
     if (search) {
       params.search = search;
     }
-    if (tag && tag !== "All") {
+    if (tag && tag !== 'All') {
       params.tag = tag;
     }
 
-    const response = await api.get<FetchNotesResponse>("/notes", {
+    const response = await api.get<FetchNotesResponse>('/notes', {
       params,
       headers: { Cookie: cookie },
     });
@@ -39,16 +47,15 @@ export const fetchNotes = async (
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       return null;
     }
-    if (process.env.NODE_ENV === "development") {
-      console.error("Server Error fetching notes:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Server Error fetching notes:', error);
     }
     throw error;
   }
 };
 
 export const fetchNoteById = async (id: string): Promise<Note | null> => {
-  const headersInstance = await headers();
-  const cookie = headersInstance.get("cookie") || "";
+  const cookie = await getCookieString();
   try {
     const response = await api.get<Note>(`/notes/${id}`, {
       headers: { Cookie: cookie },
@@ -58,20 +65,19 @@ export const fetchNoteById = async (id: string): Promise<Note | null> => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       return null;
     }
-    if (process.env.NODE_ENV === "development") {
-      console.error("Server Error fetching note by id:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Server Error fetching note by id:', error);
     }
     throw error;
   }
 };
 
 export const createNote = async (
-  note: Omit<Note, "id" | "createdAt" | "updatedAt" | "userId">
+  note: Omit<Note, 'id' | 'createdAt' | 'updatedAt' | 'userId'>
 ): Promise<Note | null> => {
-  const headersInstance = await headers();
-  const cookie = headersInstance.get("cookie") || "";
+  const cookie = await getCookieString();
   try {
-    const response = await api.post<Note>("/notes", note, {
+    const response = await api.post<Note>('/notes', note, {
       headers: { Cookie: cookie },
     });
     return response.data;
@@ -79,16 +85,15 @@ export const createNote = async (
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       return null;
     }
-    if (process.env.NODE_ENV === "development") {
-      console.error("Server Error creating note:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Server Error creating note:', error);
     }
     throw error;
   }
 };
 
 export const deleteNote = async (id: string): Promise<Note | null> => {
-  const headersInstance = await headers();
-  const cookie = headersInstance.get("cookie") || "";
+  const cookie = await getCookieString();
   try {
     const response = await api.delete<Note>(`/notes/${id}`, {
       headers: { Cookie: cookie },
@@ -98,9 +103,69 @@ export const deleteNote = async (id: string): Promise<Note | null> => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       return null;
     }
-    if (process.env.NODE_ENV === "development") {
-      console.error("Server Error deleting note:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Server Error deleting note:', error);
     }
     throw error;
+  }
+};
+
+// AUTH & USER API
+
+export const checkSession = async (): Promise<User | null> => {
+  const cookie = await getCookieString();
+  try {
+    const response = await api.get('/auth/session', {
+      headers: { Cookie: cookie },
+    });
+    if (response.data && response.data.email) {
+      return response.data as User;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+  const cookie = await getCookieString();
+  try {
+    const response = await api.get<User>('/users/me', {
+      headers: { Cookie: cookie },
+    });
+    return response.data;
+  } catch {
+    return null;
+  }
+};
+
+export const updateUserProfile = async (data: {
+  username?: string;
+  avatarUrl?: string;
+  email?: string;
+}): Promise<User | null> => {
+  const cookie = await getCookieString();
+  try {
+    const response = await api.patch<User>('/users/me', data, {
+      headers: { Cookie: cookie },
+    });
+    return response.data;
+  } catch {
+    return null;
+  }
+};
+
+export const logoutUser = async (): Promise<void> => {
+  const cookie = await getCookieString();
+  try {
+    await api.post(
+      '/auth/logout',
+      {},
+      {
+        headers: { Cookie: cookie },
+      }
+    );
+  } catch {
+    // ignore
   }
 };
