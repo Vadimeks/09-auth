@@ -1,7 +1,7 @@
 // app/(auth routes)/layout.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 // import type { Metadata } from 'next';
 
@@ -9,17 +9,19 @@ import { useRouter } from 'next/navigation';
 //   title: 'NoteHub | Auth',
 //   description: 'Auth routes for NoteHub users',
 // };
-
-export default function AuthLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+};
+export default function AuthLayout({ children }: Props) {
+  const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
+    // refresh викличе перезавантаження даних
     router.refresh();
+    setLoading(false);
   }, [router]);
 
-  return <>{children}</>;
+  return <>{loading ? <div>Loading...</div> : children}</>;
 }
