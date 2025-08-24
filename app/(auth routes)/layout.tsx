@@ -3,12 +3,12 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Metadata } from 'next';
+// import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'NoteHub | Auth',
-  description: 'Auth routes for NoteHub users',
-};
+// export const metadata: Metadata = {
+//   title: 'NoteHub | Auth',
+//   description: 'Auth routes for NoteHub users',
+// };
 
 export default function AuthLayout({
   children,
