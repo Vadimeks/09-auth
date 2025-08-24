@@ -1,48 +1,44 @@
 // lib/api/clientApi.ts
-import { api } from "./api";
-import type { LoginRequest, RegisterRequest, User } from "@/types/user";
-import type { Note, FetchNotesResponse, Tag } from "@/types/note";
-import axios from "axios";
+import { api } from './api';
+import type { LoginRequest, RegisterRequest, User } from '@/types/user';
+import type { Note, FetchNotesResponse, Tag } from '@/types/note';
+import axios from 'axios';
 
 // login
 export const loginUser = async (data: LoginRequest): Promise<User> => {
   try {
-    const response = await api.post<User>("/auth/login", data, {
-      withCredentials: true,
-    });
+    const response = await api.post<User>('/auth/login', data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Login failed");
+      throw new Error(error.response.data.message || 'Login failed');
     }
-    throw new Error("Unexpected login error");
+    throw new Error('Unexpected login error');
   }
 };
 
 // register
 export const registerUser = async (data: RegisterRequest): Promise<User> => {
   try {
-    const response = await api.post<User>("/auth/register", data, {
-      withCredentials: true,
-    });
+    const response = await api.post<User>('/auth/register', data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Registration failed");
+      throw new Error(error.response.data.message || 'Registration failed');
     }
-    throw new Error("Unexpected register error");
+    throw new Error('Unexpected register error');
   }
 };
 
 // logout
 export const logoutUser = async (): Promise<void> => {
   try {
-    await api.post("/auth/logout", {}, { withCredentials: true });
+    await api.post('/auth/logout', {});
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Logout failed");
+      throw new Error(error.response.data.message || 'Logout failed');
     }
-    throw new Error("Unexpected logout error");
+    throw new Error('Unexpected logout error');
   }
 };
 
@@ -50,7 +46,7 @@ export const logoutUser = async (): Promise<void> => {
 export const fetchNotes = async (
   page: number,
   perPage: number,
-  search: string = "",
+  search: string = '',
   tag?: Tag
 ): Promise<FetchNotesResponse> => {
   const params: {
@@ -66,68 +62,59 @@ export const fetchNotes = async (
   if (search) {
     params.search = search;
   }
-  if (tag && tag !== "All") {
+  if (tag && tag !== 'All') {
     params.tag = tag;
   }
 
   try {
-    const response = await api.get<FetchNotesResponse>("/notes", {
-      params,
-      withCredentials: true,
-    });
+    const response = await api.get<FetchNotesResponse>('/notes', { params });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Failed to fetch notes");
+      throw new Error(error.response.data.message || 'Failed to fetch notes');
     }
-    throw new Error("Unexpected fetch notes error");
+    throw new Error('Unexpected fetch notes error');
   }
 };
 
 // fetch note by id
 export const fetchNoteById = async (id: string): Promise<Note> => {
   try {
-    const response = await api.get<Note>(`/notes/${id}`, {
-      withCredentials: true,
-    });
+    const response = await api.get<Note>(`/notes/${id}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Failed to fetch note");
+      throw new Error(error.response.data.message || 'Failed to fetch note');
     }
-    throw new Error("Unexpected fetch note error");
+    throw new Error('Unexpected fetch note error');
   }
 };
 
 // create note
 export const createNote = async (
-  note: Omit<Note, "id" | "createdAt" | "updatedAt" | "userId">
+  note: Omit<Note, 'id' | 'createdAt' | 'updatedAt' | 'userId'>
 ): Promise<Note> => {
   try {
-    const response = await api.post<Note>("/notes", note, {
-      withCredentials: true,
-    });
+    const response = await api.post<Note>('/notes', note);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Failed to create note");
+      throw new Error(error.response.data.message || 'Failed to create note');
     }
-    throw new Error("Unexpected create note error");
+    throw new Error('Unexpected create note error');
   }
 };
 
 // delete note
 export const deleteNote = async (id: string): Promise<Note> => {
   try {
-    const response = await api.delete<Note>(`/notes/${id}`, {
-      withCredentials: true,
-    });
+    const response = await api.delete<Note>(`/notes/${id}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || "Failed to delete note");
+      throw new Error(error.response.data.message || 'Failed to delete note');
     }
-    throw new Error("Unexpected delete note error");
+    throw new Error('Unexpected delete note error');
   }
 };
 
@@ -138,28 +125,24 @@ export const updateUserProfile = async (data: {
   email?: string;
 }): Promise<User> => {
   try {
-    const response = await api.patch<User>("/users/profile", data, {
-      withCredentials: true,
-    });
+    const response = await api.patch<User>('/users/me', data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(
-        error.response.data.message || "Failed to update user profile"
+        error.response.data.message || 'Failed to update user profile'
       );
     }
-    throw new Error("Unexpected update profile error");
+    throw new Error('Unexpected update profile error');
   }
 };
 
-// fetch session (safe, no console errors, ESLint ok)
+// fetch session
 export const fetchSession = async (): Promise<User | null> => {
   try {
-    const response = await api.get<User>("/auth/session", {
-      withCredentials: true,
-    });
+    const response = await api.get('/auth/session');
     if (response.data && response.data.email) {
-      return response.data;
+      return response.data as User;
     }
     return null;
   } catch {
