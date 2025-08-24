@@ -1,17 +1,16 @@
 // types/user.ts
 export type User = {
-  id: string;
   email: string;
-  username?: string;
-  avatar?: string | null;
+  username: string;
+  avatar: string;
 };
 
-export type LoginRequest = {
+export type UserLoginFormValues = {
   email: string;
   password: string;
 };
 
-export type RegisterRequest = {
+export type UserRegisterFormValues = {
   email: string;
   password: string;
 };
