@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
-
+  console.log('USER:', user);
   if (!user) {
     return null;
   }

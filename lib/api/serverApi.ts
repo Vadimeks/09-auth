@@ -1,13 +1,14 @@
-// lib/api/serverApi.ts
 import { api } from './api';
 import { cookies } from 'next/headers';
 import type { FetchNotesResponse, Note, Tag } from '@/types/note';
 import type { User } from '@/types/user';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const getCookieString = async () => {
   const cookieStore = await cookies();
-  return Array.from(cookieStore.getAll())
+  const allCookies = cookieStore.getAll();
+  console.log('SSR cookies:', allCookies);
+  return Array.from(allCookies)
     .map(({ name, value }) => `${name}=${value}`)
     .join('; ');
 };
@@ -26,27 +27,17 @@ export const fetchNotes = async (
       perPage: number;
       search?: string;
       tag?: Tag;
-    } = {
-      page,
-      perPage,
-    };
-
-    if (search) {
-      params.search = search;
-    }
-    if (tag && tag !== 'All') {
-      params.tag = tag;
-    }
-
+    } = { page, perPage };
+    if (search) params.search = search;
+    if (tag && tag !== 'All') params.tag = tag;
     const response = await api.get<FetchNotesResponse>('/notes', {
       params,
       headers: { Cookie: cookie },
     });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
+    if (axios.isAxiosError(error) && error.response?.status === 401)
       return null;
-    }
     if (process.env.NODE_ENV === 'development') {
       console.error('Server Error fetching notes:', error);
     }
@@ -62,9 +53,8 @@ export const fetchNoteById = async (id: string): Promise<Note | null> => {
     });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
+    if (axios.isAxiosError(error) && error.response?.status === 401)
       return null;
-    }
     if (process.env.NODE_ENV === 'development') {
       console.error('Server Error fetching note by id:', error);
     }
@@ -82,9 +72,8 @@ export const createNote = async (
     });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
+    if (axios.isAxiosError(error) && error.response?.status === 401)
       return null;
-    }
     if (process.env.NODE_ENV === 'development') {
       console.error('Server Error creating note:', error);
     }
@@ -100,9 +89,8 @@ export const deleteNote = async (id: string): Promise<Note | null> => {
     });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
+    if (axios.isAxiosError(error) && error.response?.status === 401)
       return null;
-    }
     if (process.env.NODE_ENV === 'development') {
       console.error('Server Error deleting note:', error);
     }
@@ -112,17 +100,17 @@ export const deleteNote = async (id: string): Promise<Note | null> => {
 
 // AUTH & USER API
 
-export const checkSession = async (): Promise<User | null> => {
+export const checkSession = async (): Promise<AxiosResponse<User> | null> => {
   const cookie = await getCookieString();
   try {
-    const response = await api.get('/auth/session', {
+    const response = await api.get<User>('/auth/session', {
       headers: { Cookie: cookie },
     });
-    if (response.data && response.data.email) {
-      return response.data as User;
+    return response;
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Server Error checking session:', error);
     }
-    return null;
-  } catch {
     return null;
   }
 };
@@ -132,9 +120,14 @@ export const getCurrentUser = async (): Promise<User | null> => {
   try {
     const response = await api.get<User>('/users/me', {
       headers: { Cookie: cookie },
+      validateStatus: () => true,
     });
-    return response.data;
-  } catch {
+    console.log('getCurrentUser status:', response.status);
+    console.log('getCurrentUser data:', response.data);
+    if (response.status !== 200) return null;
+    return response.data || null;
+  } catch (error) {
+    console.error('getCurrentUser error:', error);
     return null;
   }
 };

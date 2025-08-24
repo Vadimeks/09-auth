@@ -1,19 +1,19 @@
 // app/(auth routes)/sign-up/page.tsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { registerUser } from "@/lib/api/clientApi";
-import { useAuthStore } from "@/lib/store/authStore";
-import toast from "react-hot-toast";
-import axios from "axios";
-import css from "./SignUpPage.module.css";
+import { useState } from 'react';
+
+import { registerUser } from '@/lib/api/clientApi';
+import { useAuthStore } from '@/lib/store/authStore';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import css from './SignUpPage.module.css';
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+
   const { setUser } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,16 +22,17 @@ export default function SignUpPage() {
     try {
       const user = await registerUser({ email, password });
       setUser(user);
-      toast.success("Registration successful!");
-      router.push("/profile");
+      toast.success('Registration successful!');
+      // ВАЖНА: прымусовы reload!
+      window.location.replace('/profile');
     } catch (error: unknown) {
-      let message = "Registration failed";
+      let message = 'Registration failed';
       if (axios.isAxiosError(error) && error.response) {
         console.error(
-          "Register error:",
+          'Register error:',
           JSON.stringify(error.response.data, null, 2)
         );
-        message = error.response.data.message || "Unknown registration error";
+        message = error.response.data.message || 'Unknown registration error';
       } else if (error instanceof Error) {
         message = error.message;
       }
@@ -77,10 +78,10 @@ export default function SignUpPage() {
             className={css.submitButton}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Signing up..." : "Register"}
+            {isSubmitting ? 'Signing up...' : 'Register'}
           </button>
         </div>
-        <p className={css.error}>{isSubmitting ? "" : " "}</p>
+        <p className={css.error}>{isSubmitting ? '' : ' '}</p>
       </form>
     </main>
   );
