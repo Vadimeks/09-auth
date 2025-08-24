@@ -1,9 +1,9 @@
 // app/@modal/(.)notes/[id]/page.tsx
-import { QueryClient, dehydrate } from "@tanstack/react-query";
-import NoteDetailsClient from "@/app/(private routes)/notes/[id]/NoteDetails.client";
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
-import ModalContainer from "./modal";
-import { fetchNoteById } from "@/lib/api/clientApi";
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import NoteDetailsClient from '@/app/(private routes)/notes/[id]/NoteDetails.client';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import ModalContainer from './modal';
+import { fetchNoteById } from '@/lib/api/serverApi';
 
 export default async function InterceptedNoteDetailsPage({
   params,
@@ -16,7 +16,7 @@ export default async function InterceptedNoteDetailsPage({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["note", id],
+    queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
   });
 
