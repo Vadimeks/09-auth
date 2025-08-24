@@ -51,7 +51,7 @@ export const logoutUser = async (): Promise<void> => {
 // fetch session (GET)
 export const fetchSession = async (): Promise<User | null> => {
   try {
-    const response = await api.get<User>('/auth/session');
+    const response = await api.get<User>('/users/me');
     if (response.data && response.data.email) {
       return response.data as User;
     }

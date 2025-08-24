@@ -1,13 +1,13 @@
 // components/AuthNavigation/AuthNavigation
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useAuthStore } from "@/lib/store/authStore";
-import { logoutUser } from "@/lib/api/clientApi";
-import toast from "react-hot-toast";
-import css from "./AuthNavigation.module.css";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useAuthStore } from '@/lib/store/authStore';
+import { logoutUser } from '@/lib/api/clientApi';
+import toast from 'react-hot-toast';
+import css from './AuthNavigation.module.css';
 
 const AuthNavigation = () => {
   const router = useRouter();
@@ -19,11 +19,11 @@ const AuthNavigation = () => {
     try {
       await logoutUser();
       clearUser();
-      toast.success("Logged out!");
-      router.push("/sign-in");
+      toast.success('Logged out!');
+      router.push('/sign-in');
     } catch (error: unknown) {
-      let message = "Logout failed";
-      if (typeof error === "object" && error !== null && "message" in error) {
+      let message = 'Logout failed';
+      if (typeof error === 'object' && error !== null && 'message' in error) {
         message = String((error as { message?: string }).message);
       }
       toast.error(message);
@@ -63,7 +63,7 @@ const AuthNavigation = () => {
           onClick={handleLogout}
           disabled={isLoggingOut}
         >
-          {isLoggingOut ? "Logging out..." : "Logout"}
+          {isLoggingOut ? 'Logging out...' : 'Logout'}
         </button>
       </li>
     </>

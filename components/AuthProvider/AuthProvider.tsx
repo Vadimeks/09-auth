@@ -1,9 +1,9 @@
 // components / AuthProvider / AuthProvider
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useAuthStore } from "@/lib/store/authStore";
-import { fetchSession } from "@/lib/api/clientApi";
+import { useEffect, useState } from 'react';
+import { useAuthStore } from '@/lib/store/authStore';
+import { fetchSession } from '@/lib/api/clientApi';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -17,7 +17,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     const checkSession = async () => {
       try {
         const user = await fetchSession();
-
         if (user) {
           setUser(user);
         } else {
