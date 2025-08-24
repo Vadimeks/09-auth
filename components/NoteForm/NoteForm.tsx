@@ -1,26 +1,15 @@
 // components/NoteForm/NoteForm.tsx
-"use client";
+'use client';
 
-import { createNote } from "@/lib/api/clientApi";
-import type { Tag } from "@/types/note";
-import styles from "./NoteForm.module.css";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { useNoteStore } from "@/lib/store/noteStore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createNote } from '@/lib/api/clientApi';
+import type { Tag } from '@/types/note';
+import styles from './NoteForm.module.css';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { useNoteStore } from '@/lib/store/noteStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const allTags: Tag[] = [
-  "Work",
-  "Personal",
-  "Meeting",
-  "Shopping",
-  "Ideas",
-  "Travel",
-  "Finance",
-  "Health",
-  "Important",
-  "Todo",
-];
+const allTags: Tag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
 export default function NoteForm() {
   const router = useRouter();
@@ -32,9 +21,9 @@ export default function NoteForm() {
   const mutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
       clearDraft();
-      toast.success("Note created successfully!");
+      toast.success('Note created successfully!');
       router.push(`/notes/filter/${encodeURIComponent(draft.tag)}`);
     },
     onError: (error: Error) => {
@@ -55,12 +44,12 @@ export default function NoteForm() {
     event.preventDefault();
 
     if (!draft.title || draft.title.length < 3 || draft.title.length > 50) {
-      toast.error("Title must be between 3 and 50 characters.");
+      toast.error('Title must be between 3 and 50 characters.');
       return;
     }
 
     if (draft.content.length > 500) {
-      toast.error("Content must be at most 500 characters.");
+      toast.error('Content must be at most 500 characters.');
       return;
     }
 
@@ -121,7 +110,7 @@ export default function NoteForm() {
           className={styles.submitButton}
           disabled={mutation.isPending}
         >
-          {mutation.isPending ? "Creating..." : "Create Note"}
+          {mutation.isPending ? 'Creating...' : 'Create Note'}
         </button>
       </div>
     </form>
