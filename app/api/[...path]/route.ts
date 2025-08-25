@@ -1,11 +1,12 @@
-// app / api / [...path] / route.ts
+// app/api/[...path]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  context: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  const { path } = context.params;
+  const resolvedParams = await params;
+  const { path } = resolvedParams;
   const url = new URL(`https://notehub-api.goit.study/api/${path.join('/')}`);
   const cookie = request.headers.get('cookie') || '';
   try {
@@ -33,9 +34,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  context: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  const { path } = context.params;
+  const resolvedParams = await params;
+  const { path } = resolvedParams;
   const url = new URL(`https://notehub-api.goit.study/api/${path.join('/')}`);
   const cookie = request.headers.get('cookie') || '';
   const body = await request.json();
@@ -67,9 +69,10 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  const { path } = context.params;
+  const resolvedParams = await params;
+  const { path } = resolvedParams;
   const url = new URL(`https://notehub-api.goit.study/api/${path.join('/')}`);
   const cookie = request.headers.get('cookie') || '';
   console.log('Proxy DELETE:', url.toString());
