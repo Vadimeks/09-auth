@@ -1,20 +1,15 @@
 /* app/notes/filter/[...slug]/page.tsx */
-import NotesClient from "./Notes.client";
-import type { Tag } from "@/types/note";
-import { type Metadata } from "next";
+import NotesClient from './Notes.client';
+import type { Tag } from '@/types/note';
+import { type Metadata } from 'next';
 
 const validTags: Tag[] = [
-  "Todo",
-  "Work",
-  "Personal",
-  "Meeting",
-  "Shopping",
-  "Ideas",
-  "Travel",
-  "Finance",
-  "Health",
-  "Important",
-  "All",
+  'Todo',
+  'Work',
+  'Personal',
+  'Meeting',
+  'Shopping',
+  'All',
 ];
 
 export async function generateMetadata({
@@ -26,12 +21,12 @@ export async function generateMetadata({
   const slugTag =
     resolvedParams.slug &&
     resolvedParams.slug.length > 0 &&
-    resolvedParams.slug[0] !== "all"
+    resolvedParams.slug[0] !== 'all'
       ? resolvedParams.slug[0]
-      : "All";
+      : 'All';
   const tag: Tag = validTags.includes(slugTag as Tag)
     ? (slugTag as Tag)
-    : "All";
+    : 'All';
   return {
     title: `NoteHub - ${tag}`,
     description: `View notes filtered by ${tag} on NoteHub.`,
@@ -47,12 +42,12 @@ export default async function NotesPage({
   const slugTag =
     resolvedParams.slug &&
     resolvedParams.slug.length > 0 &&
-    resolvedParams.slug[0] !== "all"
+    resolvedParams.slug[0] !== 'all'
       ? resolvedParams.slug[0]
-      : "All";
+      : 'All';
   const tag: Tag = validTags.includes(slugTag as Tag)
     ? (slugTag as Tag)
-    : "All";
+    : 'All';
 
   // Выкарыстоўвай NotesClient, перадай tag
   return <NotesClient tag={tag} />;

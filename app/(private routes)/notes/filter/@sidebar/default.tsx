@@ -1,21 +1,16 @@
 // app/notes/filter/@sidebar/default.tsx
 
-import Link from "next/link";
-import type { Tag } from "@/types/note";
-import css from "./SidebarNotes.module.css";
+import Link from 'next/link';
+import type { Tag } from '@/types/note';
+import css from './SidebarNotes.module.css';
 
 const allTags: Tag[] = [
-  "Work",
-  "Personal",
-  "Meeting",
-  "Shopping",
-  "Ideas",
-  "Travel",
-  "Finance",
-  "Health",
-  "Important",
-  "Todo",
-  "All",
+  'Work',
+  'Personal',
+  'Meeting',
+  'Shopping',
+  'Todo',
+  'All',
 ];
 
 export default function SidebarNotes() {
@@ -27,7 +22,7 @@ export default function SidebarNotes() {
           <li key={tag} className={css.menuItem}>
             <Link
               href={
-                tag === "All" ? "/notes/filter/All" : `/notes/filter/${tag}`
+                tag === 'All' ? '/notes/filter/All' : `/notes/filter/${tag}`
               }
               className={css.menuLink}
             >
