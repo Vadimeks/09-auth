@@ -1,4 +1,4 @@
-// app / api / [...path] / route.ts
+// app /lib/ api / [...path] / route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
