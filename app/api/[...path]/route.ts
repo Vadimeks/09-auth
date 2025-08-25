@@ -1,11 +1,11 @@
-// app /lib/ api / [...path] / route.ts
+// app / api / [...path] / route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: { path: string[] } }
 ) {
-  const { path } = params;
+  const { path } = context.params;
   const url = new URL(`https://notehub-api.goit.study/api/${path.join('/')}`);
   const cookie = request.headers.get('cookie') || '';
   try {
@@ -33,9 +33,9 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: { path: string[] } }
 ) {
-  const { path } = params;
+  const { path } = context.params;
   const url = new URL(`https://notehub-api.goit.study/api/${path.join('/')}`);
   const cookie = request.headers.get('cookie') || '';
   const body = await request.json();
@@ -67,9 +67,9 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: { path: string[] } }
 ) {
-  const { path } = params;
+  const { path } = context.params;
   const url = new URL(`https://notehub-api.goit.study/api/${path.join('/')}`);
   const cookie = request.headers.get('cookie') || '';
   console.log('Proxy DELETE:', url.toString());
