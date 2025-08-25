@@ -1,3 +1,4 @@
+// lib/api/serverApi.ts
 import { api } from './api';
 import { cookies } from 'next/headers';
 import type { FetchNotesResponse, Note, Tag } from '@/types/note';
