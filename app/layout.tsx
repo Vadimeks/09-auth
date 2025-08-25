@@ -35,18 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const allTags: Tag[] = [
-  'Work',
-  'Personal',
-  'Meeting',
-  'Shopping',
-  'Ideas',
-  'Travel',
-  'Finance',
-  'Health',
-  'Important',
-  'Todo',
-];
+const allTags: Tag[] = ['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'];
 
 export default function RootLayout({
   children,
