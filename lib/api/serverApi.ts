@@ -119,7 +119,15 @@ export const checkSession = async (): Promise<AxiosResponse<User> | null> => {
 export const getCurrentUser = async (): Promise<User | null> => {
   const cookie = await getCookieString();
   try {
-    const response = await api.get<User>('/users/me', {
+    // Абсалютны URL для SSR
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_SITE_URL ||
+      'http://localhost:3000';
+    const url = `${siteUrl}/api/users/me`;
+    console.log('getCurrentUser url:', url);
+
+    const response = await axios.get<User>(url, {
       headers: { Cookie: cookie },
       validateStatus: () => true,
     });
